@@ -4,14 +4,14 @@ function(to, password, subject="R message", message="EOM", from=NULL,
     confirmBeforeSend=FALSE, clear.username = FALSE){
     data(UNAME)
     cells <- sapply(strsplit(to, "@"), function(x) x[2]) %in% cell.ext[, 2]
-    loc <- paste0(find.package("gmailR"), "/data")
+    loc <- paste(find.package("gmailR"), "/data",sep="")
     if ((is.null(username) & is.na(UNAME) & !exists(".UNAME", 
         envir = .GlobalEnv)) | clear.username) {
         cat("\n","Enter gmail Username","\n")
         UNAME <- scan(n=1,what = character(0), quiet=T)
         .UNAME <<- UNAME 
-        unlink(paste0(loc, "/UNAME.rda"), recursive = TRUE, 
-            force = FALSE)
+        unlink(paste(loc, "/UNAME.rda"), recursive = TRUE, 
+            force = FALSE,sep="")
         save(UNAME, file = paste0(loc, "/UNAME.rda"))
     }     
     if (exists(".UNAME", envir = .GlobalEnv)) {
@@ -27,7 +27,7 @@ function(to, password, subject="R message", message="EOM", from=NULL,
     if (!is.null(attachment) && 
         (length(unlist(strsplit(attachment, "\\", fixed=TRUE))) == 1|
         length(unlist(strsplit(attachment, "/", fixed=TRUE))) == 1)) {
-        attachment <- paste0(getwd(), "/", attachment)
+        attachment <- paste(getwd(), "/", attachment,sep="")
     }
     atts <- rep(attachment, length(to))
     atts <- lapply(atts, c)
